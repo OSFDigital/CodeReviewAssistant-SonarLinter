@@ -1,0 +1,11 @@
+name: "Code Review Assistant - Sonar Linter"
+
+inputs:
+    azureAccount:
+        required: true
+    azureKey:
+        required: true
+
+runs:
+    using: "node12"
+    main: "dist/index.js"
