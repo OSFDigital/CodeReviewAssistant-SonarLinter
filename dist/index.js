@@ -2211,7 +2211,7 @@ async function run() {
         const destDirectory = path.join(tempDirectory, uuidV4());
         await io.mkdirP(destDirectory);
 
-        const jarVer = "1.0.0";
+        const jarVer = "1.1.0";
         const blobURL = `https://${azureAccount}.blob.core.windows.net`;
 
         const azureCredentials = new StorageSharedKeyCredential(azureAccount, azureKey);
