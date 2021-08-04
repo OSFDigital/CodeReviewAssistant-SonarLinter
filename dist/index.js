@@ -2264,6 +2264,7 @@ async function run() {
     try {
         const azureAccount = core.getInput("azureAccount", { required: true });
         const azureKey = core.getInput("azureKey", { required: true });
+        const debug = core.getInput("debug", { required: false });
 
         const tempDirectory = process.env.RUNNER_TEMP;
         if (!tempDirectory) {
@@ -2273,7 +2274,7 @@ async function run() {
         const destDirectory = path.join(tempDirectory, uuidV4());
         await io.mkdirP(destDirectory);
 
-        const jarVer = "1.1.0";
+        const jarVer = "1.2.0";
         const blobURL = `https://${azureAccount}.blob.core.windows.net`;
 
         const azureCredentials = new StorageSharedKeyCredential(azureAccount, azureKey);
@@ -2288,7 +2289,13 @@ async function run() {
 
         const javaPath = await io.which("java", true);
         core.setSecret(`${javaPath} -jar ${jarPath}`);
-        await exec.exec(javaPath, [`-jar`, jarPath, `--annotations-type=GITHUB_ACTIONS`]);
+
+        const args = ["-jar", jarPath, "--annotations-type=GITHUB_ACTIONS"];
+        if (debug === "true") {
+            args.push("--debug");
+        }
+
+        await exec.exec(javaPath, args);
     } catch (e) {
         core.setFailed(e.message);
     }

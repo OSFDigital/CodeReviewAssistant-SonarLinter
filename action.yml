@@ -5,6 +5,8 @@ inputs:
         required: true
     azureKey:
         required: true
+    debug:
+        required: false
 
 runs:
     using: "node12"
